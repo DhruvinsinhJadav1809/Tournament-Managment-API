@@ -1,0 +1,38 @@
+# =========================================================================
+# Build Outputs (Compiled binaries and temporary build files)
+# =========================================================================
+bin/
+obj/
+
+# =========================================================================
+# Environment & User-Specific Secrets
+# =========================================================================
+# Exclude local settings that contain connection strings or API secrets
+appsettings.Development.json
+appsettings.local.json
+
+# User secrets folder used by .NET Core for local development
+.microsoft.dotnet.secretmanager/
+
+# =========================================================================
+# IDE & Editor Specific Files
+# =========================================================================
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / IntelliJ
+.idea/
+
+# Visual Studio Code
+.vscode/
+!.vscode/extensions.json
+
+# =========================================================================
+# Operating System files
+# =========================================================================
+Thumbs.db
+.DS_Store
