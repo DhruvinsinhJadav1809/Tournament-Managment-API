@@ -55,7 +55,7 @@ public class AnnouncementService
 
         if (request.ExpireAt.HasValue &&
             request.ExpireAt.Value <
-            DateTime.UtcNow)
+            DateTime.Now)
         {
             throw new ApiException(
                 "Expire date must be today or future.",
@@ -236,7 +236,7 @@ public class AnnouncementService
                     request.ExpireAt,
 
                 CreatedAt =
-                    DateTime.UtcNow,
+                    DateTime.Now,
 
                 CreatedByUserId =
                     adminId,
@@ -262,7 +262,7 @@ public class AnnouncementService
                         UserId = userId,
 
                         CreatedAt =
-                            DateTime.UtcNow
+                            DateTime.Now
                     });
         }
 
@@ -300,7 +300,7 @@ public class AnnouncementService
         Guid userId)
     {
         var currentDate =
-            DateTime.UtcNow;
+            DateTime.Now;
         var isAdmin = await _context.Users
                 .Where(x => x.Id == userId)
                 .Select(x => x.Role.Name == RoleConstants.Admin)

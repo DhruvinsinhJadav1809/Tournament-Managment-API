@@ -25,6 +25,11 @@ namespace GamesAPI.Api.Data
         public DbSet<AnnouncementRecipient>
             AnnouncementRecipients
         { get; set; }
+        public DbSet<Conversation> Conversations { get; set; }
+
+        public DbSet<ConversationParticipant> ConversationParticipants { get; set; }
+
+        public DbSet<ConversationMessage> ConversationMessages { get; set; }
         protected override void OnModelCreating(
         ModelBuilder modelBuilder)
         {
@@ -76,38 +81,68 @@ namespace GamesAPI.Api.Data
                 .HasForeignKey(x => x.CreatedByUserId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Announcement>()
-.HasOne(x => x.Tournament)
-.WithMany()
-.HasForeignKey(x => x.TournamentId)
-.OnDelete(DeleteBehavior.Restrict);
+            .HasOne(x => x.Tournament)
+            .WithMany()
+            .HasForeignKey(x => x.TournamentId)
+            .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Announcement>()
-                .HasOne(x => x.Match)
-                .WithMany()
-                .HasForeignKey(x => x.MatchId)
-                .OnDelete(DeleteBehavior.Restrict);
+            .HasOne(x => x.Match)
+            .WithMany()
+            .HasForeignKey(x => x.MatchId)
+            .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Announcement>()
-                .HasOne(x => x.CreatedByUser)
-                .WithMany()
-                .HasForeignKey(x => x.CreatedByUserId)
-                .OnDelete(DeleteBehavior.Restrict);
+            .HasOne(x => x.CreatedByUser)
+            .WithMany()
+            .HasForeignKey(x => x.CreatedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<AnnouncementRecipient>()
-                .HasOne(x => x.Announcement)
-                .WithMany(x => x.AnnouncementRecipients)
-                .HasForeignKey(x => x.AnnouncementId)
-                .OnDelete(DeleteBehavior.Cascade);
+            .HasOne(x => x.Announcement)
+            .WithMany(x => x.AnnouncementRecipients)
+            .HasForeignKey(x => x.AnnouncementId)
+            .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AnnouncementRecipient>()
-                .HasOne(x => x.User)
-                .WithMany()
-                .HasForeignKey(x => x.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+            .HasOne(x => x.User)
+            .WithMany()
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<AnnouncementRecipient>()
-                .HasOne(x => x.Announcement)
-                .WithMany(x => x.AnnouncementRecipients)
-                .HasForeignKey(x => x.AnnouncementId);
+            .HasOne(x => x.Announcement)
+            .WithMany(x => x.AnnouncementRecipients)
+            .HasForeignKey(x => x.AnnouncementId);
+            modelBuilder.Entity<Conversation>()
+            .HasOne(c => c.CreatedByUser)
+            .WithMany()
+            .HasForeignKey(c => c.CreatedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ConversationParticipant>()
+            .HasOne(cp => cp.Conversation)
+            .WithMany(c => c.Participants)
+            .HasForeignKey(cp => cp.ConversationId)
+            .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<ConversationParticipant>()
+            .HasOne(cp => cp.User)
+            .WithMany()
+            .HasForeignKey(cp => cp.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ConversationMessage>()
+            .HasOne(m => m.Conversation)
+            .WithMany(c => c.Messages)
+            .HasForeignKey(m => m.ConversationId)
+            .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<ConversationMessage>()
+            .HasOne(m => m.Sender)
+            .WithMany()
+            .HasForeignKey(m => m.SenderId)
+            .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ConversationParticipant>()
+            .HasOne(cp => cp.LastSeenMessage)
+            .WithMany(m => m.SeenByParticipants)
+            .HasForeignKey(cp => cp.LastSeenMessageId)
+            .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

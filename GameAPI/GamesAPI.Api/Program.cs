@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using GamesAPI.Api.Middleware;
 using GamesAPI.Api.Hubs;
+using GamesAPI.Api.Services.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 //For Reading JWT settings from appsettings.json
@@ -100,6 +101,13 @@ IAnnouncementService,
 AnnouncementService>();
 builder.Services.AddScoped<IOnlineUserService, OnlineUserService>();
 builder.Services.AddSingleton<IOnlineUserTracker, OnlineUserTracker>();
+builder.Services.AddScoped<
+    IConversationService,
+    ConversationService>();
+
+
+//Encrypt Decrypt 
+builder.Services.AddSingleton<ICryptoService, CryptoService>();
 // Database
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
@@ -199,4 +207,6 @@ app.MapControllers();
 
 app.MapHub<AnnouncementHub>(
     "/hubs/announcements");
+app.MapHub<ChatHub>(
+"/hubs/chat");
 app.Run();

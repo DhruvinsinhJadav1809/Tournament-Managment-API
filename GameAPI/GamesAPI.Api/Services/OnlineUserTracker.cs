@@ -25,7 +25,7 @@ public class OnlineUserTracker : IOnlineUserTracker
         {
             UserId = userId,
             UserName = userName,
-            ConnectedAt = DateTime.UtcNow,
+            ConnectedAt = DateTime.Now,
             ConnectionIds = new HashSet<string>
             {
                 connectionId
