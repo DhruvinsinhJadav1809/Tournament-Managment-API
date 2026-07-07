@@ -60,6 +60,31 @@ Features
 
 ---
 
+## Database Setup
+
+The project includes a ready-to-use SQL script for creating the database schema and inserting sample data.
+
+### Steps
+
+1. Navigate to the following folder:
+
+```text
+Data/SQLScript
+```
+
+2. Execute the provided SQL script in SQL Server.
+
+The script will automatically:
+
+- Create all required database tables.
+- Configure relationships and constraints.
+- Insert sample users.
+- Insert sample application data (Games, Tournaments, etc.).
+
+After executing the script, update the `DefaultConnection` string in `appsettings.json` to point to your SQL Server instance, then run the application.
+
+> **Note:** The sample data is provided for development and testing purposes, allowing you to start using the application immediately without manually creating records.
+
 # 👤 User Management
 
 Implemented
