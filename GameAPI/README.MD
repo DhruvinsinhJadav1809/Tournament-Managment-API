@@ -30,6 +30,10 @@ The project is designed as a real-world application to learn enterprise-level ba
 
 ---
 
+# For run the project
+
+dotnet run --launch-profile https
+
 # 📂 Project Architecture
 
 ```
@@ -291,6 +295,202 @@ Responsible for
 - Receive Messages
 
 Keeping hubs separated improves scalability and maintainability.
+
+---
+
+# 📧 Email & 🏆 Winner Certificate Module
+
+## Overview
+
+This project supports sending emails for:
+
+- User Invitations
+- Tournament Winner Congratulations (with PDF Certificate Attachment)
+
+The implementation is designed to be reusable and extensible for future email templates and document generation.
+
+---
+
+# Email Provider
+
+The project uses **Mailtrap SMTP** for email delivery during development.
+
+## NuGet Packages
+
+```bash
+MailKit
+MimeKit
+```
+
+These libraries are used to:
+
+- Connect to SMTP
+- Send HTML emails
+- Send file attachments (PDF)
+- Support future email templates
+
+---
+
+# Email Templates
+
+All email templates are stored inside:
+
+```text
+Templates/
+```
+
+Example:
+
+```text
+Templates/
+    InviteUser.html
+    WinnerEmail.html
+```
+
+Templates use placeholders such as:
+
+```html
+{{WinnerName}} {{TournamentName}} {{GameName}} {{AwardDate}} {{IssuedBy}}
+```
+
+These placeholders are replaced dynamically before sending the email.
+
+---
+
+# PDF Certificate Generation
+
+Winner certificates are generated as PDF documents from an HTML template.
+
+The project uses:
+
+```text
+HTML Template
+        ↓
+Placeholder Replacement
+        ↓
+HTML
+        ↓
+PDF Generator
+        ↓
+byte[]
+```
+
+The generated PDF is reused for:
+
+- Downloading from the application
+- Sending as an email attachment
+
+No duplicate PDF generation logic exists.
+
+---
+
+# Certificate Service
+
+The `CertificateService` is responsible for:
+
+- Generate Winner Certificate
+- Download Winner Certificate
+- Send Winner Certificate Email
+
+Available methods:
+
+```csharp
+GenerateWinnerCertificateAsync()
+
+SendWinnerCertificateAsync()
+```
+
+This keeps all certificate-related functionality in one place.
+
+---
+
+# Email Service
+
+`EmailService` is generic and reusable.
+
+Supports:
+
+- HTML emails
+- Plain text emails
+- PDF attachments
+- Future document attachments
+
+Method:
+
+```csharp
+SendEmailAsync(
+    string toEmail,
+    string subject,
+    string body,
+    byte[]? attachment = null,
+    string? attachmentName = null,
+    bool isHtml = true);
+```
+
+This method can be reused for:
+
+- Invitations
+- Winner Certificates
+- Agreements
+- Invoices
+- Reports
+- Future documents
+
+---
+
+# Winner Email Flow
+
+```text
+Match Completed
+        ↓
+Tournament Winner Updated
+        ↓
+SaveChanges()
+        ↓
+Create Notification
+        ↓
+CertificateService.SendWinnerCertificateAsync()
+        ↓
+Load Tournament
+        ↓
+Generate PDF Certificate
+        ↓
+Read Winner Email Template
+        ↓
+Replace HTML Placeholders
+        ↓
+EmailService.SendEmailAsync()
+        ↓
+Winner Receives Email + PDF Certificate
+```
+
+---
+
+# Download Certificate Flow
+
+```text
+User Clicks Download
+        ↓
+CertificateService
+        ↓
+GenerateWinnerCertificateAsync()
+        ↓
+Return PDF (byte[])
+        ↓
+File Download
+```
+
+---
+
+# Design Principles
+
+- Single Responsibility Principle (SRP)
+- Reusable Email Service
+- Reusable Certificate Generator
+- No duplicated PDF generation logic
+- HTML templates separated from business logic
+- Database access remains inside business services
+- Certificate generation remains independent of Entity Framework models
 
 ---
 

@@ -15,13 +15,16 @@ namespace GamesAPI.Api.Controllers
     {
         private readonly ITournamentService _tournamentService;
         private readonly ILogService _logService;
-
+        // private readonly ICertificateService _certificateService;
         public TournamentsController(
             ITournamentService tournamentService,
-            ILogService logService)
+            ILogService logService
+             // ,ICertificateService certificateService
+             )
         {
             _tournamentService = tournamentService;
             _logService = logService;
+            // _certificateService = certificateService;
         }
 
         /// <summary>
@@ -309,6 +312,20 @@ namespace GamesAPI.Api.Controllers
                 Message = "Your Tournament Details",
                 Data = response
             });
+        }
+
+        [HttpPost("download/certificate")]
+        public async Task<IActionResult> DownloadWinnerCertificate(
+      Guid tournamentId)
+        {
+            var pdf =
+                await _tournamentService
+                    .DownloadWinnerCertificateAsync(tournamentId);
+
+            return File(
+                pdf,
+                "application/pdf",
+                "WinnerCertificate.pdf");
         }
     }
 }

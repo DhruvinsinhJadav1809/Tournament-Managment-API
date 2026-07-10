@@ -104,8 +104,19 @@ builder.Services.AddSingleton<IOnlineUserTracker, OnlineUserTracker>();
 builder.Services.AddScoped<
     IConversationService,
     ConversationService>();
+builder.Services.AddScoped<
+    IInvitationService,
+    InvitationService>();
+builder.Services.AddScoped<
+ICertificateService,
+CertificateService>();
 
-
+//Email  Conf
+builder.Services.Configure<EmailSettings>(
+    builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddScoped<
+    IEmailService,
+    EmailService>();
 //Encrypt Decrypt 
 builder.Services.AddSingleton<ICryptoService, CryptoService>();
 // Database

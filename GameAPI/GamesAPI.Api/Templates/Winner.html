@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tournament Winner Announcement</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f0f4ff;font-family:'Inter',Arial,Helvetica,sans-serif;">
+
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f0f4ff;padding:40px 16px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+          <!-- Logo header -->
+          <tr>
+            <td align="center" style="padding-bottom:24px;">
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background:#3340ec;border-radius:16px;padding:12px 20px;">
+                    <span style="color:#ffffff;font-size:20px;font-weight:700;letter-spacing:-0.5px;">
+                      🏆 Tournament Management
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Main card -->
+          <tr>
+            <td style="background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(51,64,236,0.08);">
+
+              <!-- Hero banner -->
+              <tr>
+                <td style="background:linear-gradient(135deg,#f59e0b 0%,#fbbf24 40%,#f97316 100%);padding:48px 40px;text-align:center;">
+
+                  <!-- Stars -->
+                  <div style="font-size:22px;letter-spacing:6px;margin-bottom:16px;">
+                    ⭐ ⭐ ⭐
+                  </div>
+
+                  <!-- Trophy -->
+                  <div style="display:inline-block;background:rgba(255,255,255,0.2);border-radius:50%;width:88px;height:88px;line-height:88px;text-align:center;font-size:46px;margin-bottom:16px;box-shadow:0 8px 32px rgba(0,0,0,0.15);">
+                    🏆
+                  </div>
+
+                  <br/>
+
+                  <span style="color:#ffffff;font-size:30px;font-weight:800;letter-spacing:-0.5px;display:block;margin-top:8px;text-shadow:0 2px 8px rgba(0,0,0,0.15);">
+                    We Have a Winner!
+                  </span>
+                  <span style="color:rgba(255,255,255,0.85);font-size:15px;display:block;margin-top:8px;">
+                    Tournament Champion Announcement
+                  </span>
+                </td>
+              </tr>
+
+              <!-- Body -->
+              <tr>
+                <td style="padding:40px;">
+
+                  <!-- Greeting -->
+                  <p style="margin:0 0 6px 0;font-size:22px;font-weight:700;color:#111827;text-align:center;">
+                    Congratulations, {{WinnerName}}! 🎉
+                  </p>
+                  <p style="margin:0 0 32px 0;font-size:15px;color:#6b7280;line-height:1.6;text-align:center;">
+                    You have emerged as the champion of an outstanding tournament.
+                    Your skill and dedication have paid off!
+                  </p>
+
+                  <!-- Winner card -->
+                  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
+                    <tr>
+                      <td style="background:linear-gradient(135deg,#fffbeb,#fef3c7);border:2px solid #fde68a;border-radius:16px;padding:28px;text-align:center;">
+
+                        <!-- Crown -->
+                        <div style="font-size:40px;margin-bottom:12px;">👑</div>
+
+                        <!-- Winner name -->
+                        <p style="margin:0 0 4px 0;font-size:28px;font-weight:800;color:#92400e;letter-spacing:-0.5px;">
+                          {{WinnerName}}
+                        </p>
+                        <p style="margin:0 0 20px 0;font-size:13px;color:#b45309;font-weight:600;text-transform:uppercase;letter-spacing:1px;">
+                          Tournament Champion
+                        </p>
+
+                        <!-- Divider -->
+                        <div style="height:1px;background:#fde68a;margin-bottom:20px;"></div>
+
+                        <!-- Tournament details -->
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                          <tr>
+                            <!-- Game -->
+                            <td style="text-align:center;padding:0 12px;border-right:1px solid #fde68a;">
+                              <div style="font-size:24px;margin-bottom:6px;">🎮</div>
+                              <p style="margin:0;font-size:11px;color:#b45309;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Game</p>
+                              <p style="margin:0;font-size:15px;font-weight:700;color:#92400e;">{{GameName}}</p>
+                            </td>
+                            <!-- Trophy -->
+                            <td style="text-align:center;padding:0 12px;">
+                              <div style="font-size:24px;margin-bottom:6px;">🏆</div>
+                              <p style="margin:0;font-size:11px;color:#b45309;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Tournament</p>
+                              <p style="margin:0;font-size:15px;font-weight:700;color:#92400e;">{{TournamentName}}</p>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- Message -->
+                  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f4ff;border-radius:14px;margin-bottom:28px;">
+                    <tr>
+                      <td style="padding:24px;text-align:center;">
+                        <p style="margin:0 0 8px 0;font-size:16px;font-weight:700;color:#3340ec;">
+                          🎊 Outstanding Achievement!
+                        </p>
+                        <p style="margin:0;font-size:14px;color:#4b5563;line-height:1.7;">
+                          You have demonstrated exceptional skill throughout
+                          <strong>{{TournamentName}}</strong> in
+                          <strong>{{GameName}}</strong>.
+                          Your victory is well deserved. A certificate of achievement
+                          has been issued in your name.
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- Divider -->
+                  <div style="height:1px;background:#f3f4f6;margin-bottom:24px;"></div>
+
+                  <!-- Footer note -->
+                  <p style="margin:0;font-size:13px;color:#9ca3af;line-height:1.6;text-align:center;">
+                    This announcement was sent by the Tournament Management team.<br/>
+                    Keep competing and achieving great things!
+                  </p>
+
+                </td>
+              </tr>
+
+              <!-- Footer -->
+              <tr>
+                <td style="background:#f9fafb;padding:20px 40px;border-top:1px solid #f3f4f6;">
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td style="text-align:center;">
+                        <span style="font-size:13px;color:#9ca3af;">
+                          2026 Tournament Management. All rights reserved.
+                        </span>
+                        <br/>
+                        <span style="font-size:12px;color:#d1d5db;margin-top:4px;display:inline-block;">
+                          This is an automated email, please do not reply.
+                        </span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+            </td>
+          </tr>
+
+          <!-- Bottom spacing -->
+          <tr>
+            <td style="padding-top:24px;text-align:center;">
+              <span style="font-size:12px;color:#9ca3af;">
+                Powered by Tournament Management System
+              </span>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

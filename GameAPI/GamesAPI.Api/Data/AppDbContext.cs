@@ -30,6 +30,7 @@ namespace GamesAPI.Api.Data
         public DbSet<ConversationParticipant> ConversationParticipants { get; set; }
 
         public DbSet<ConversationMessage> ConversationMessages { get; set; }
+        public DbSet<Invitation> Invitations { get; set; }
         protected override void OnModelCreating(
         ModelBuilder modelBuilder)
         {
@@ -143,6 +144,14 @@ namespace GamesAPI.Api.Data
             .WithMany(m => m.SeenByParticipants)
             .HasForeignKey(cp => cp.LastSeenMessageId)
             .OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity<Invitation>()
+            .HasOne(x => x.InvitedByUser)
+            .WithMany()
+            .HasForeignKey(x => x.InvitedByUserId)
+            .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Invitation>()
+            .Property(x => x.Status)
+            .HasConversion<int>();
         }
     }
 }

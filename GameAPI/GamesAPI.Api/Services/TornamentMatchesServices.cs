@@ -10,16 +10,18 @@ namespace GamesAPI.Api.Services
     public class TournamentMatchesService : ITournamentMatchesService
     {
         private readonly AppDbContext _context;
-
+        private readonly ICertificateService _certificateService;
         public TournamentMatchesService(
             AppDbContext context,
             ILogService logService,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            ICertificateService certificateService)
         {
             _context = context;
             _logService = logService;
             _notificationService =
             notificationService;
+            _certificateService = certificateService;
         }
         private readonly
             ILogService
@@ -756,10 +758,16 @@ AssignRoundOnePlayers(
                         "Tournament Champion",
                         $"Congratulations! You won {tournament.Name}.",
                         NotificationTypes.Information);
+
                 }
             }
 
             await _context.SaveChangesAsync();
+            if (nextMatch == null)
+            {
+                await _certificateService
+                    .SendWinnerCertificateAsync(match.TournamentId);
+            }
             await _notificationService
     .CreateNotificationAsync(
         request.WinnerId,

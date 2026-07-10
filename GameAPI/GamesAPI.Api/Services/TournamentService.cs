@@ -15,15 +15,18 @@ namespace GamesAPI.Api.Services
 
         public TournamentService(
             AppDbContext context,
-            ILogService logService)
+            ILogService logService,
+            ICertificateService certificateService)
         {
             _context = context;
             _logService = logService;
+            _certificateService = certificateService;
         }
         private readonly
             ILogService
             _logService;
 
+        private readonly ICertificateService _certificateService;
 
         public async Task<GetTournamentsResponse>
             GetTournamentsAsync(
@@ -653,6 +656,53 @@ namespace GamesAPI.Api.Services
                 };
 
             return response;
+        }
+
+        public async Task<byte[]> DownloadWinnerCertificateAsync(
+        Guid tournamentId)
+        {
+            // 1. Get Tournament
+            var tournament = await _context.Tournaments
+                .Include(x => x.Game)
+                .Include(x => x.Winner)
+                .FirstOrDefaultAsync(x =>
+                x.Id == tournamentId &&
+                !x.IsDeleted);
+
+            if (tournament == null)
+            {
+                throw new ApiException(
+                    "Tournament not found.",
+                    StatusCodes.Status404NotFound);
+            }
+
+            // 2. Validate Winner
+            if (tournament.WinnerId == null)
+            {
+                throw new ApiException(
+                    "Winner has not been declared.",
+                    StatusCodes.Status400BadRequest);
+            }
+            var createdBy = await _context.Users
+                .Where(x => x.Id == tournament.CreatedByUserId)
+                .Select(x => x.FullName)
+                .FirstOrDefaultAsync();
+            var request = new WinnerCertificateRequest
+            {
+                WinnerName = tournament?.Winner?.FullName ?? "Winner",
+                TournamentName = tournament?.Name ?? "Tournament",
+                GameName = tournament?.Game?.Name ?? "Game",
+                AwardDate = tournament?.UpdatedAt ?? DateTime.Now,
+                IssuedBy = createdBy ?? "Tournament Organizer",
+                CertificateId = tournament?.Id ?? Guid.Empty
+            };
+
+            // 3. Generate Certificate
+            var certificate = await _certificateService
+                .GenerateWinnerCertificateAsync(
+                    request);
+
+            return certificate;
         }
     }
 }

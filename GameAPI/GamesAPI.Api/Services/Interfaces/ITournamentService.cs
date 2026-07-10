@@ -33,5 +33,7 @@ namespace GamesAPI.Api.Interfaces
             Guid tournamentId);
         Task<GetMyTournamentsResponse> GetMyTournamentsAsync(
                         Guid userId);
+        Task<byte[]> DownloadWinnerCertificateAsync(
+        Guid tournamentId);
     }
 }
