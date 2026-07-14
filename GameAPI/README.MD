@@ -571,3 +571,24 @@ This project was built to gain hands-on experience with enterprise backend devel
 - Production Ready API Design
 
 ---
+
+### Hangfire Background Jobs
+
+- Added **Hangfire** for background job scheduling.
+- Using **SQL Server Storage** to persist job information.
+- Hangfire Dashboard available at:
+
+```text
+https://localhost:{port}/hangfire
+```
+
+- Current implementation:
+  - `Logger` background job.
+  - Runs **every minute** using `Cron.Minutely()`.
+  - Currently logs the current date and time (used for learning and Hangfire verification).
+
+#### NuGet Packages
+
+- Hangfire
+- Hangfire.AspNetCore
+- Hangfire.SqlServer

@@ -9,6 +9,8 @@ using Microsoft.OpenApi.Models;
 using GamesAPI.Api.Middleware;
 using GamesAPI.Api.Hubs;
 using GamesAPI.Api.Services.Security;
+using Hangfire;
+using GamesAPI.Api.Jobs;
 
 var builder = WebApplication.CreateBuilder(args);
 //For Reading JWT settings from appsettings.json
@@ -110,7 +112,12 @@ builder.Services.AddScoped<
 builder.Services.AddScoped<
 ICertificateService,
 CertificateService>();
-
+builder.Services.AddScoped<LoggerJob>();
+// For scheduler
+builder.Services.AddHangfire(config =>
+    config.UseSqlServerStorage(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddHangfireServer();
 //Email  Conf
 builder.Services.Configure<EmailSettings>(
     builder.Configuration.GetSection("EmailSettings"));
@@ -123,23 +130,6 @@ builder.Services.AddSingleton<ICryptoService, CryptoService>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Authentication
-// builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//     .AddJwtBearer(options =>
-//     {
-//         options.TokenValidationParameters = new TokenValidationParameters
-//         {
-//             ValidateIssuer = true,
-//             ValidateAudience = true,
-//             ValidateLifetime = true,
-//             ValidateIssuerSigningKey = true,
-//             ValidIssuer = jwtSettings["Issuer"],
-//             ValidAudience = jwtSettings["Audience"],
-//             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-//     jwtSettings["Key"]!))
-//         };
-//     });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -212,7 +202,12 @@ app.UseMiddleware<
 // JWT middleware
 app.UseAuthentication();
 app.UseAuthorization();
-
+//Scheduler
+app.UseHangfireDashboard("/hangfire");
+RecurringJob.AddOrUpdate<LoggerJob>(
+    "hello-world-job",
+    x => x.SayHello(),
+    Cron.Minutely);
 // Controllers
 app.MapControllers();
 
